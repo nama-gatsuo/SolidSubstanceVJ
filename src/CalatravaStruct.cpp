@@ -10,7 +10,7 @@ void CalatravaStruct::setup(){
     mesh = ofMesh::box(1.,1.,1., 1,1,1);
     
     ofFloatColor col;
-    col.set(1.);
+    col.set(1.0);
     
     for (int i = 0; i < mesh.getNumIndices(); i++){
         mesh.addColor(col);
@@ -39,6 +39,7 @@ void CalatravaStruct::draw(ofCamera& cam, bool isShadow){
     
     shader.begin();
     shader.setUniform1i("isShadow", isShadow?1:0);
+    shader.setUniform1i("isWire", drawMode==OF_MESH_WIREFRAME?1:0);
     shader.setUniformMatrix4f("normalMatrix", normalMatrix);
     shader.setUniform1f("farClip", cam.getFarClip());
     shader.setUniform1f("nearClip", cam.getNearClip());

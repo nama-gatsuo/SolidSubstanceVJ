@@ -1,6 +1,7 @@
 #pragma once
 #include "ofMain.h"
 #include "ObjBase.hpp"
+#include "CommonUtil.hpp"
 
 class TriWall : public ObjBase {
 public:
@@ -14,7 +15,7 @@ public:
         for (int i = 0; i < 6; i++) {
             mesh.clear();
             num = floor(ofRandom(2.0, 8.0));
-            float z = ofRandom(-800, 800);
+            
             c.set(0.5, 0.8, 0.8 + ofRandom(0.8));
             
             randomSeeds.clear();
@@ -28,7 +29,7 @@ public:
                 
                 for (int j = 0; j < xn; j++) {
                     
-                    ofVec3f shift(dw * (j-xn*0.5), dh * (i-yn*0.5), z);
+                    ofVec3f shift(dw * (j-xn*0.5), dh * (i-yn*0.5), 0.);
                     if (i%2==0) shift.x -= dw * 0.5;
                     
                     v[0] = ofVec3f(0,r,0) + shift;
@@ -44,25 +45,50 @@ public:
                 
             }
             meshes.push_back(mesh);
+            SmoothValue s;
+            s.setSpeed(0.005);
+            zs.push_back(s);
         }
-        
+        randomize();
     };
-    void update(){};
+    void update(){
+        for (int i = 0; i < 6; i++) {
+            zs[i].update();
+        }
+    };
     void draw(ofCamera& cam, bool isShadow){
         ofMatrix4x4 normalMatrix = ofMatrix4x4::getTransposedOf(cam.getModelViewMatrix().getInverse());
         shader.begin();
         shader.setUniform1i("isShadow",isShadow?1:0);
+        shader.setUniform1i("isWire", drawMode==OF_MESH_WIREFRAME?1:0);
         shader.setUniformMatrix4f("normalMatrix", normalMatrix);
         shader.setUniform1f("farClip", cam.getFarClip());
         shader.setUniform1f("nearClip", cam.getNearClip());
         
-        for (int i = 0;i < 6; i++) {
+        for (int i = 0; i < 6; i++) {
+            ofPushMatrix();
+            ofTranslate(ofVec3f(0, 0, zs[i].getValue()));
             meshes[i].draw(drawMode);
+            ofPopMatrix();
         }
         
         shader.end();
     };
-    void randomize(){};
+    void randomize(){
+        
+        float coin = ofRandom(1.0);
+        
+        if (coin > 0.5) {
+            for (int i = 0; i < 6; i++) {
+                zs[i].to(ofRandom(-1200, 1200));
+            }
+        } else {
+            for (int i = 0; i < 6; i++) {
+                zs[i].to(0.);
+            }
+        }
+        
+    };
     void setParams(int ch, float vol){};
 private:
     void createRandomSeed(){
@@ -152,6 +178,7 @@ private:
     
     ofFloatColor c;
     vector<ofVboMesh> meshes;
+    vector<SmoothValue> zs;
     ofVboMesh mesh;
     ofShader shader;
     

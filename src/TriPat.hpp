@@ -50,6 +50,7 @@ public:
         ofMatrix4x4 normalMatrix = ofMatrix4x4::getTransposedOf(cam.getModelViewMatrix().getInverse());
         shader.begin();
         shader.setUniform1i("isShadow", isShadow?1:0);
+        shader.setUniform1i("isWire", drawMode==OF_MESH_WIREFRAME?1:0);
         shader.setUniformMatrix4f("normalMatrix", normalMatrix);
         shader.setUniform1f("farClip", cam.getFarClip());
         shader.setUniform1f("nearClip", cam.getNearClip());

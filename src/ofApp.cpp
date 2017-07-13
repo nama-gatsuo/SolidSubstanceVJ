@@ -6,13 +6,24 @@ void ofApp::setup(){
     ofBackground(0);
     setupDeferred();
     
-    shared_ptr<ObjBase> o1(new CalatravaStruct());
+    shared_ptr<ObjBase> o0(new CalatravaStruct());
+    o0->setup();
+    objs.push_back(o0);
+    
+    shared_ptr<ObjBase> o1(new MatInst());
     o1->setup();
     objs.push_back(o1);
     
     shared_ptr<ObjBase> o2(new TriWall());
     o2->setup();
     objs.push_back(o2);
+    
+    
+    shared_ptr<ObjBase> o3(new TriPat());
+    o3->setup();
+    objs.push_back(o3);
+    
+    camPos.setSpeed(0.005);
     
     disableWireFrame();
 }
@@ -21,7 +32,7 @@ void ofApp::setup(){
 void ofApp::update(){
     
     for (int i = 0; i < objs.size(); i++) {
-        objs[i]->update();
+        if (objs[i]->isEnable()) objs[i]->update();
     }
     lp1.update();
     lp2.update();    
@@ -39,12 +50,13 @@ void ofApp::draw(){
     
     if (isWire) {
         ofEnableBlendMode(OF_BLENDMODE_ADD);
+//        ofSetColor(255, 1);
         cam.begin();
     } else {
         shadowLightPass->beginShadowMap(true);
         ofCamera sc = shadowLightPass->getCam();
         for (int i = 0; i < objs.size(); i++) {
-            objs[i]->draw(sc, true);
+            if (objs[i]->isEnable()) objs[i]->draw(sc, true);
         }
         lightingPass->drawLights(sc, true);
         shadowLightPass->endShadowMap();
@@ -53,8 +65,10 @@ void ofApp::draw(){
     }
     
     for (int i = 0; i < objs.size(); i++) {
-        objs[i]->draw(cam, false);
+        if (objs[i]->isEnable()) objs[i]->draw(cam, false);
     }
+    
+    
     
     if (isWire) {
         lightingPass->drawLights(cam, false, OF_MESH_WIREFRAME);
@@ -77,13 +91,27 @@ void ofApp::keyPressed(int key){
     }
     else if (key == ' ') {
         for (int i = 0; i < objs.size(); i++) {
-            objs[i]->randomize();
+            if (objs[i]->isEnable()) objs[i]->randomize();
         }
         lp1.to(ofPoint(ofRandom(-800, 800), ofRandom(0, 800), ofRandom(-800, 800)));
         lp2.to(ofPoint(ofRandom(-800, 800), ofRandom(0, 800), ofRandom(-800, 800)));
         
         camPos.to(ofPoint(ofRandom(-400, 1200), ofRandom(0, 800), ofRandom(-400, 1200)));
         camLook.to(ofPoint(ofRandom(-100, 100), ofRandom(-100, 100), ofRandom(-100, 100)));
+    }
+    
+    if (key == '0') {
+        if (objs[0]->isEnable()) objs[0]->disable();
+        else objs[0]->enable();
+    } else if (key == '1') {
+        if (objs[1]->isEnable()) objs[1]->disable();
+        else objs[1]->enable();
+    } else if (key == '2') {
+        if (objs[2]->isEnable()) objs[2]->disable();
+        else objs[2]->enable();
+    } else if (key == '3') {
+        if (objs[3]->isEnable()) objs[3]->disable();
+        else objs[3]->enable();
     }
 }
 

@@ -94,6 +94,7 @@
 		4F9BBBACB059E9611DE1F113 /* ShadowLightPass.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ShadowLightPass.hpp; path = ../../../addons/ofxDeferredShading/src/ShadowLightPass.hpp; sourceTree = SOURCE_ROOT; };
 		52AFA1F08C420992CAAAE648 /* ofxSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSlider.h; path = ../../../addons/ofxGui/src/ofxSlider.h; sourceTree = SOURCE_ROOT; };
 		5A9816491F177A89001A3E5A /* TriWall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TriWall.hpp; sourceTree = "<group>"; };
+		5A98164C1F17BD76001A3E5A /* MatInst.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MatInst.hpp; sourceTree = "<group>"; };
 		5AA2F2981F147300001D2915 /* ObjBase.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ObjBase.hpp; sourceTree = "<group>"; };
 		5AA2F29E1F1476F3001D2915 /* CommonUtil.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CommonUtil.hpp; sourceTree = "<group>"; };
 		5AA2F2A21F14AE64001D2915 /* CalatravaStruct.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CalatravaStruct.cpp; sourceTree = "<group>"; };
@@ -204,6 +205,7 @@
 				5AA2F2A31F14AE64001D2915 /* CalatravaStruct.hpp */,
 				5AA2F2A61F14DFE9001D2915 /* TriPat.hpp */,
 				5A9816491F177A89001A3E5A /* TriWall.hpp */,
+				5A98164C1F17BD76001A3E5A /* MatInst.hpp */,
 			);
 			name = Objs;
 			sourceTree = "<group>";

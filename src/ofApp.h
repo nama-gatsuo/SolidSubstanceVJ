@@ -4,6 +4,7 @@
 #include "ObjBase.hpp"
 #include "CommonUtil.hpp"
 #include "CalatravaStruct.hpp"
+#include "MatInst.hpp"
 #include "TriPat.hpp"
 #include "TriWall.hpp"
 

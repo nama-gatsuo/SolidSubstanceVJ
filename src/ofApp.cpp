@@ -3,16 +3,18 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
+    ofBackground(0);
     setupDeferred();
     
     shared_ptr<ObjBase> o1(new CalatravaStruct());
     o1->setup();
     objs.push_back(o1);
     
-    shared_ptr<ObjBase> o2(new TriPat());
+    shared_ptr<ObjBase> o2(new TriWall());
     o2->setup();
     objs.push_back(o2);
     
+    disableWireFrame();
 }
 
 //--------------------------------------------------------------
@@ -35,39 +37,53 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    shadowLightPass->beginShadowMap(true);
-    ofCamera sc = shadowLightPass->getCam();
-    for (int i = 0; i < objs.size(); i++) {
-        objs[i]->draw(sc, true);
+    if (isWire) {
+        ofEnableBlendMode(OF_BLENDMODE_ADD);
+        cam.begin();
+    } else {
+        shadowLightPass->beginShadowMap(true);
+        ofCamera sc = shadowLightPass->getCam();
+        for (int i = 0; i < objs.size(); i++) {
+            objs[i]->draw(sc, true);
+        }
+        lightingPass->drawLights(sc, true);
+        shadowLightPass->endShadowMap();
+        
+        deferred.begin(cam, true);
     }
-    lightingPass->drawLights(sc, true);
-    shadowLightPass->endShadowMap();
     
-    deferred.begin(cam, true);
     for (int i = 0; i < objs.size(); i++) {
         objs[i]->draw(cam, false);
     }
-    lightingPass->drawLights(cam, false);
-
-    deferred.end();
     
-//    shadowLightPass->debugDraw();
+    if (isWire) {
+        lightingPass->drawLights(cam, false, OF_MESH_WIREFRAME);
+        cam.end();
+        ofDisableBlendMode();
+    } else {
+        lightingPass->drawLights(cam, false);
+        deferred.end();
+    }
+    
     if (isShow) panel.draw();
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     if (key == 'h') isShow = !isShow;
-    if (key == ' ') {
+    else if (key == 'w') {
+        if (isWire) disableWireFrame();
+        else enableWireFrame();
+    }
+    else if (key == ' ') {
         for (int i = 0; i < objs.size(); i++) {
             objs[i]->randomize();
-            
-            lp1.to(ofPoint(ofRandom(-800, 800), ofRandom(0, 800), ofRandom(-800, 800)));
-            lp2.to(ofPoint(ofRandom(-800, 800), ofRandom(0, 800), ofRandom(-800, 800)));
-            
-            camPos.to(ofPoint(ofRandom(-400, 1200), ofRandom(0, 800), ofRandom(-400, 1200)));
-            camLook.to(ofPoint(ofRandom(-100, 100), ofRandom(-100, 100), ofRandom(-100, 100)));
         }
+        lp1.to(ofPoint(ofRandom(-800, 800), ofRandom(0, 800), ofRandom(-800, 800)));
+        lp2.to(ofPoint(ofRandom(-800, 800), ofRandom(0, 800), ofRandom(-800, 800)));
+        
+        camPos.to(ofPoint(ofRandom(-400, 1200), ofRandom(0, 800), ofRandom(-400, 1200)));
+        camLook.to(ofPoint(ofRandom(-100, 100), ofRandom(-100, 100), ofRandom(-100, 100)));
     }
 }
 
@@ -159,4 +175,18 @@ void ofApp::updateDeferredParam(){
     dofPass->setMaxBlur(dof_blur.get());
     dofPass->setAperture(dof_ape.get());
     
+}
+
+void ofApp::enableWireFrame(){
+    isWire = true;
+    for (int i = 0; i < objs.size(); i++) {
+        objs[i]->enableWireFrame();
+    }
+}
+
+void ofApp::disableWireFrame(){
+    isWire = false;
+    for (int i = 0; i < objs.size(); i++) {
+        objs[i]->disableWireFrame();
+    }
 }

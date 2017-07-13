@@ -5,6 +5,7 @@
 #include "CommonUtil.hpp"
 #include "CalatravaStruct.hpp"
 #include "TriPat.hpp"
+#include "TriWall.hpp"
 
 #include "ofxOsc.h"
 #include "ofxDeferredShading.h"
@@ -25,10 +26,17 @@ private:
     void setupDeferred();
     void updateDeferredParam();
     
+    void enableWireFrame();
+    void disableWireFrame();
+    
     vector<shared_ptr<ObjBase>> objs;
     
     ofEasyCam cam;
-
+    
+    bool isWire = true;
+    bool isDebug;
+    
+    // for shading
     ofxDeferredProcessing deferred;
     PointLightPass* lightingPass;
     SsaoPass* ssaoPass;

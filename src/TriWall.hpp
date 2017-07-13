@@ -2,46 +2,48 @@
 #include "ofMain.h"
 #include "ObjBase.hpp"
 
-class TriPat : public ObjBase {
+class TriWall : public ObjBase {
 public:
     void setup(){
         
         shader.load("shader/gbuffer.vert", "shader/customShader.frag");
         
-        plane = ofMesh::box(3000, 3000, 10, 1,1,1);
-        for (int i = 0; i < plane.getNumVertices(); i++) {
-            plane.addColor(ofFloatColor(0.5, 0.5, 0.7));
-        }
+        unsigned yn = 6;
+        unsigned xn = 6;
         
-        mesh.setMode(OF_PRIMITIVE_TRIANGLES);
-        createRandomSeed();
-        
-        unsigned yn = 10;
-        unsigned xn = 10;
-        
-        float r = 200;
-        float dh = r * 1.5;
-        float dw = r * sqrt(3.);
-        for (int i = 0; i < yn; i++) {
-            ofVec3f v[3];
+        for (int i = 0; i < 6; i++) {
+            mesh.clear();
+            num = floor(ofRandom(2.0, 8.0));
+            float z = ofRandom(-800, 800);
+            c.set(0.5, 0.8, 0.8 + ofRandom(0.8));
             
-            for (int j = 0; j < xn; j++) {
+            randomSeeds.clear();
+            createRandomSeed();
+            
+            float r = 600;
+            float dh = r * 1.5;
+            float dw = r * sqrt(3.);
+            for (int i = 0; i < yn; i++) {
+                ofVec3f v[3];
                 
-                ofVec3f shift(dw * (j-xn*0.5), 0, dh * (i-yn*0.5));
-                if (i%2==0) shift.x -= dw * 0.5;
+                for (int j = 0; j < xn; j++) {
+                    
+                    ofVec3f shift(dw * (j-xn*0.5), dh * (i-yn*0.5), z);
+                    if (i%2==0) shift.x -= dw * 0.5;
+                    
+                    v[0] = ofVec3f(0,r,0) + shift;
+                    v[1] = ofVec3f(-r*sqrt(3.)*0.5,-r*0.5,0) + shift;
+                    v[2] = ofVec3f(r*sqrt(3.)*0.5,-r*0.5,0) + shift;
+                    createTri(v[0], v[1], v[2]);
+                    
+                    v[0] = ofVec3f(r*sqrt(3.)*0.5,-r*0.5,0) + shift;
+                    v[1] = ofVec3f(0,r,0) + shift;
+                    v[2] = ofVec3f(r*sqrt(3.),r,0) + shift;
+                    createTri(v[0], v[1], v[2]);
+                }
                 
-                v[0] = ofVec3f(0,0,r) + shift;
-                v[1] = ofVec3f(-r*sqrt(3.)*0.5,0,-r*0.5) + shift;
-                v[2] = ofVec3f(r*sqrt(3.)*0.5,0,-r*0.5) + shift;
-                createTri(v[0], v[1], v[2]);
-                
-                v[0] = ofVec3f(r*sqrt(3.)*0.5,0,-r*0.5) + shift;
-                v[1] = ofVec3f(0,0,r) + shift;
-                v[2] = ofVec3f(r*sqrt(3.),0,r) + shift;
-                createTri(v[0], v[1], v[2]);
             }
-            
-            
+            meshes.push_back(mesh);
         }
         
     };
@@ -49,18 +51,19 @@ public:
     void draw(ofCamera& cam, bool isShadow){
         ofMatrix4x4 normalMatrix = ofMatrix4x4::getTransposedOf(cam.getModelViewMatrix().getInverse());
         shader.begin();
-        shader.setUniform1i("isShadow", isShadow?1:0);
+        shader.setUniform1i("isShadow",isShadow?1:0);
         shader.setUniformMatrix4f("normalMatrix", normalMatrix);
         shader.setUniform1f("farClip", cam.getFarClip());
         shader.setUniform1f("nearClip", cam.getNearClip());
-        mesh.draw(drawMode);
-//        plane.draw();
+        
+        for (int i = 0;i < 6; i++) {
+            meshes[i].draw(drawMode);
+        }
+        
         shader.end();
     };
-    
     void randomize(){};
     void setParams(int ch, float vol){};
-    
 private:
     void createRandomSeed(){
         randomSeeds.clear();
@@ -120,60 +123,38 @@ private:
         
     };
     void addBox(ofVec3f start, ofVec3f end, float width){
-        float w = 40. * width;
-        ofVec3f side = w * (start-end).getCrossed(ofVec3f(0,1.,0)).normalize();
-        ofVec3f exc(0,60 * width ,0);
-        ofFloatColor c;
-        if (width > 0.4 && width < 0.6) {
-            c.set(0.8, 0.8, 1.6);
-        } else {
-            c.set(0.5, 0.5, 0.7);
-        }
         
-        //
-        mesh.addVertex(end + exc);
-        mesh.addVertex(start + exc);
-        mesh.addVertex(start - side);
+        ofVec3f rel = (end - start).normalize();
+        float lat = acos(rel.y) - HALF_PI;
+        float lon = atan2(rel.x, rel.z);
         
-        mesh.addVertex(start - side);
-        mesh.addVertex(end - side);
-        mesh.addVertex(end + exc);
+        ofMatrix4x4 m;
+        m.rotateRad(lat, 1, 0, 0);
+        m.rotateRad(lon, 0, 1, 0);
         
-        for (int i = 0; i < 6; i++) {
-            ofVec3f v1 = end + exc,
-            v2 = start + exc,
-            v3 = start - side;
+        float d = end.distance(start);
+        float h = 48. / num;
+        float w = 48. / num;
+        
+        ofMesh box = ofMesh::box(w,h,d, 1,1,1);
+        for (int i = 0; i < box.getNumVertices(); i++) {
+            ofVec3f v = (box.getVertex(i) + ofVec3f(0,0,d*0.5)) * m + start;
+            ofVec3f n = ((box.getNormal(i) + v) * m - (v * m)).normalize();
             
-            mesh.addNormal((v2-v1).getCrossed(v3-v1));
-            mesh.addColor(c);
-        }
-        
-        //
-        mesh.addVertex(end + exc);
-        mesh.addVertex(start + exc);
-        mesh.addVertex(start + side);
-        
-        mesh.addVertex(start +side);
-        mesh.addVertex(end + side);
-        mesh.addVertex(end + exc);
-
-        for (int i = 0; i < 6; i++) {
-            ofVec3f v1 = end + exc,
-            v2 = start + side,
-            v3 = start + exc;
+            box.setVertex(i, v);
+            box.setNormal(i, n);
             
-            mesh.addNormal((v2-v1).getCrossed(v3-v1));
-            mesh.addColor(c);
+            box.addColor(c);
         }
+        mesh.append(box);
         
-        //
     };
     
+    ofFloatColor c;
+    vector<ofVboMesh> meshes;
     ofVboMesh mesh;
-    ofVboMesh plane;
     ofShader shader;
     
-    const unsigned num = 6;
+    unsigned num = 6;
     vector<vector<float>> randomSeeds;
-    
 };

@@ -50,7 +50,7 @@ void CalatravaStruct::draw(ofCamera& cam, bool isShadow){
     shader.setUniform3f("toRotate", toRotate);
     shader.setUniform3f("toScale", toScale);
     
-    mesh.drawInstanced(OF_MESH_FILL, num);
+    mesh.drawInstanced(drawMode, num);
     
     shader.end();
 }

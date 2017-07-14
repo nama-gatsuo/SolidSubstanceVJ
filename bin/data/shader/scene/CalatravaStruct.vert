@@ -102,6 +102,9 @@ void main(){
     vec4 viewPos = modelViewMatrix * vec4(p, 1.0);
     vDepth = - viewPos.z / (farClip - nearClip);
     vNormal = (normalMatrix * normal).xyz;
-    vColor = color;
+
+    if (mod(gl_InstanceID, 20.) == 0.) vColor = vec4(1.5, 0.8, 8., 1.0);
+    else vColor = color;
+
     vPosition = viewPos;
 }

@@ -8,6 +8,8 @@
 #include "TriPat.hpp"
 #include "TriWall.hpp"
 
+#include "PostEffect.hpp"
+
 #include "ofxOsc.h"
 #include "ofxDeferredShading.h"
 #include "ofxGui.h"
@@ -30,18 +32,24 @@ private:
     void enableWireFrame();
     void disableWireFrame();
     
+    void setSpeed(float s);
+    
     vector<shared_ptr<ObjBase>> objs;
     
     ofEasyCam cam;
     
     bool isWire = true;
     bool isDebug;
+    float speed;
+    
+    PostEffect pe;
     
     // for shading
     ofxDeferredProcessing deferred;
     PointLightPass* lightingPass;
     SsaoPass* ssaoPass;
     ShadowLightPass* shadowLightPass;
+    HdrBloomPass* hdrBloomPass;
     DofPass* dofPass;
     
     SmoothPoint lp1, lp2;

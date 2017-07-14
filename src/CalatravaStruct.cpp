@@ -61,7 +61,7 @@ void CalatravaStruct::randomize(){
     fromTrans.to(ofPoint(ofRandom(1000),ofRandom(1000),ofRandom(1000)));
     fromRotate.to(ofPoint(ofRandom(TWO_PI*2.),ofRandom(TWO_PI*2.),ofRandom(TWO_PI*2.)));
     fromScale.to(ofPoint(10.,10.,1000));
-    toTrans.to(ofPoint(ofRandom(2000),ofRandom(2000),ofRandom(2000)));;
+    toTrans.to(ofPoint(ofRandom(2000),ofRandom(2000),ofRandom(2000)));
     toRotate.to(ofPoint(ofRandom(TWO_PI*2.),ofRandom(TWO_PI*2.),ofRandom(TWO_PI*2.)));
     toScale.to(ofPoint(10.,10.,1000));;
     

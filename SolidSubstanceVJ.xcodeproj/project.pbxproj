@@ -17,6 +17,7 @@
 		53E839FEC8D0FFD985013F97 /* HdrBloomPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4366243D498AA6884A237F6A /* HdrBloomPass.cpp */; };
 		5864AD82E20F15536D054EA3 /* ofxOscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DF49D76C45D5DB505A234880 /* ofxOscMessage.cpp */; };
 		5AA2F2A41F14AE64001D2915 /* CalatravaStruct.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5AA2F2A21F14AE64001D2915 /* CalatravaStruct.cpp */; };
+		5AA60FD01F1871B500C4E8D7 /* PostEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5AA60FCE1F1871B500C4E8D7 /* PostEffect.cpp */; };
 		5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C88333E71C9457E441C33474 /* ofxButton.cpp */; };
 		62545D179C94265CA1389D4A /* OscOutboundPacketStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63A47AC60FFAFC3BF093EC0F /* OscOutboundPacketStream.cpp */; };
 		640279EE111671BD026CB013 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C2FAC65C491D4231379F3298 /* ofxOscReceiver.cpp */; };
@@ -100,6 +101,8 @@
 		5AA2F2A21F14AE64001D2915 /* CalatravaStruct.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CalatravaStruct.cpp; sourceTree = "<group>"; };
 		5AA2F2A31F14AE64001D2915 /* CalatravaStruct.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CalatravaStruct.hpp; sourceTree = "<group>"; };
 		5AA2F2A61F14DFE9001D2915 /* TriPat.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TriPat.hpp; sourceTree = "<group>"; };
+		5AA60FCE1F1871B500C4E8D7 /* PostEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PostEffect.cpp; sourceTree = "<group>"; };
+		5AA60FCF1F1871B500C4E8D7 /* PostEffect.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PostEffect.hpp; sourceTree = "<group>"; };
 		63A47AC60FFAFC3BF093EC0F /* OscOutboundPacketStream.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = OscOutboundPacketStream.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscOutboundPacketStream.cpp; sourceTree = SOURCE_ROOT; };
 		65EEFA3DA3526E9CDD9C21F9 /* ofxOscBundle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxOscBundle.cpp; path = ../../../addons/ofxOsc/src/ofxOscBundle.cpp; sourceTree = SOURCE_ROOT; };
 		6B65E6930994CC4B2D2B8B33 /* OscPacketListener.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscPacketListener.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscPacketListener.h; sourceTree = SOURCE_ROOT; };
@@ -356,6 +359,8 @@
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
 				5AA2F2981F147300001D2915 /* ObjBase.hpp */,
 				5AA2F29E1F1476F3001D2915 /* CommonUtil.hpp */,
+				5AA60FCE1F1871B500C4E8D7 /* PostEffect.cpp */,
+				5AA60FCF1F1871B500C4E8D7 /* PostEffect.hpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -480,6 +485,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AA2F2A41F14AE64001D2915 /* CalatravaStruct.cpp in Sources */,
+				5AA60FD01F1871B500C4E8D7 /* PostEffect.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				8163AE5761A226A5012B27BD /* DofPass.cpp in Sources */,

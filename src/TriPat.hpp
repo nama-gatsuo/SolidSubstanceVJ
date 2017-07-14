@@ -1,12 +1,13 @@
 #pragma once
 #include "ofMain.h"
 #include "ObjBase.hpp"
+#include "CommonUtil.hpp"
 
 class TriPat : public ObjBase {
 public:
     void setup(){
         
-        shader.load("shader/gbuffer.vert", "shader/customShader.frag");
+        shader.load("shader/scene/TriPat.vert", "shader/scene/shader.frag");
         
         plane = ofMesh::box(3000, 3000, 10, 1,1,1);
         for (int i = 0; i < plane.getNumVertices(); i++) {
@@ -19,7 +20,7 @@ public:
         unsigned yn = 10;
         unsigned xn = 10;
         
-        float r = 200;
+        float r = 300;
         float dh = r * 1.5;
         float dw = r * sqrt(3.);
         for (int i = 0; i < yn; i++) {
@@ -41,11 +42,13 @@ public:
                 createTri(v[0], v[1], v[2]);
             }
             
-            
         }
         
+        seed.to(0.5);
     };
-    void update(){};
+    void update(){
+        seed.update();
+    };
     void draw(ofCamera& cam, bool isShadow){
         ofMatrix4x4 normalMatrix = ofMatrix4x4::getTransposedOf(cam.getModelViewMatrix().getInverse());
         shader.begin();
@@ -54,12 +57,16 @@ public:
         shader.setUniformMatrix4f("normalMatrix", normalMatrix);
         shader.setUniform1f("farClip", cam.getFarClip());
         shader.setUniform1f("nearClip", cam.getNearClip());
+        shader.setUniform1f("seed", seed.getValue());
+        
         mesh.draw(drawMode);
-//        plane.draw();
+        
         shader.end();
     };
     
-    void randomize(){};
+    void randomize(){
+        seed.to(ofRandom(1.));
+    };
     void setParams(int ch, float vol){};
     
 private:
@@ -127,6 +134,7 @@ private:
         ofFloatColor c;
         if (width > 0.4 && width < 0.6) {
             c.set(0.8, 0.8, 1.6);
+            width *= 0.5;
         } else {
             c.set(0.5, 0.5, 0.7);
         }
@@ -145,7 +153,7 @@ private:
             v2 = start + exc,
             v3 = start - side;
             
-            mesh.addNormal((v2-v1).getCrossed(v3-v1));
+            mesh.addNormal(((v2-v1).getCrossed(v3-v1)).getNormalized());
             mesh.addColor(c);
         }
         
@@ -163,7 +171,7 @@ private:
             v2 = start + side,
             v3 = start + exc;
             
-            mesh.addNormal((v2-v1).getCrossed(v3-v1));
+            mesh.addNormal(((v2-v1).getCrossed(v3-v1)).getNormalized());
             mesh.addColor(c);
         }
         
@@ -173,6 +181,8 @@ private:
     ofVboMesh mesh;
     ofVboMesh plane;
     ofShader shader;
+    
+    SmoothValue seed;
     
     const unsigned num = 6;
     vector<vector<float>> randomSeeds;

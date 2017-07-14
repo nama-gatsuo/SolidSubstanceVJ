@@ -4,7 +4,10 @@
 void ofApp::setup(){
     
     ofBackground(0);
+    pe.setup();
     setupDeferred();
+//    shadowLightPass->setEnabled(false);
+//    hdrBloomPass->setEnabled(false);
     
     shared_ptr<ObjBase> o0(new CalatravaStruct());
     o0->setup();
@@ -49,8 +52,8 @@ void ofApp::update(){
 void ofApp::draw(){
     
     if (isWire) {
+        pe.begin();
         ofEnableBlendMode(OF_BLENDMODE_ADD);
-//        ofSetColor(255, 1);
         cam.begin();
     } else {
         shadowLightPass->beginShadowMap(true);
@@ -68,15 +71,20 @@ void ofApp::draw(){
         if (objs[i]->isEnable()) objs[i]->draw(cam, false);
     }
     
-    
-    
     if (isWire) {
         lightingPass->drawLights(cam, false, OF_MESH_WIREFRAME);
         cam.end();
         ofDisableBlendMode();
+        pe.end();
+        pe.draw();
     } else {
         lightingPass->drawLights(cam, false);
-        deferred.end();
+        deferred.end(false);
+        
+        pe.begin();
+        deferred.draw();
+        pe.end();
+        pe.draw();
     }
     
     if (isShow) panel.draw();
@@ -84,34 +92,58 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    if (key == 'h') isShow = !isShow;
-    else if (key == 'w') {
-        if (isWire) disableWireFrame();
-        else enableWireFrame();
-    }
-    else if (key == ' ') {
-        for (int i = 0; i < objs.size(); i++) {
-            if (objs[i]->isEnable()) objs[i]->randomize();
-        }
-        lp1.to(ofPoint(ofRandom(-800, 800), ofRandom(0, 800), ofRandom(-800, 800)));
-        lp2.to(ofPoint(ofRandom(-800, 800), ofRandom(0, 800), ofRandom(-800, 800)));
-        
-        camPos.to(ofPoint(ofRandom(-400, 1200), ofRandom(0, 800), ofRandom(-400, 1200)));
-        camLook.to(ofPoint(ofRandom(-100, 100), ofRandom(-100, 100), ofRandom(-100, 100)));
-    }
     
-    if (key == '0') {
-        if (objs[0]->isEnable()) objs[0]->disable();
-        else objs[0]->enable();
-    } else if (key == '1') {
-        if (objs[1]->isEnable()) objs[1]->disable();
-        else objs[1]->enable();
-    } else if (key == '2') {
-        if (objs[2]->isEnable()) objs[2]->disable();
-        else objs[2]->enable();
-    } else if (key == '3') {
-        if (objs[3]->isEnable()) objs[3]->disable();
-        else objs[3]->enable();
+    switch (key) {
+        case ' ':
+            for (int i = 0; i < objs.size(); i++) {
+                if (objs[i]->isEnable()) objs[i]->randomize();
+            }
+            lp1.to(ofPoint(ofRandom(-800, 800), ofRandom(0, 800), ofRandom(-800, 800)));
+            lp2.to(ofPoint(ofRandom(-800, 800), ofRandom(0, 800), ofRandom(-800, 800)));
+            
+            camPos.to(ofPoint(ofRandom(-1600, 1600), ofRandom(0, 1000), ofRandom(-1600, 1600)));
+            camLook.to(ofPoint(ofRandom(-400, 400), ofRandom(-400, 400), ofRandom(-400, 400)));
+            break;
+        case 'h':
+            isShow = !isShow;
+            break;
+        case 'w':
+            if (isWire) disableWireFrame();
+            else enableWireFrame();
+            break;
+        case '0':
+            if (objs[0]->isEnable()) objs[0]->disable();
+            else objs[0]->enable();
+            break;
+        case '1':
+            if (objs[1]->isEnable()) objs[1]->disable();
+            else objs[1]->enable();
+            break;
+        case '2':
+            if (objs[2]->isEnable()) objs[2]->disable();
+            else objs[2]->enable();
+            break;
+        case '3':
+            if (objs[3]->isEnable()) objs[3]->disable();
+            else objs[3]->enable();
+            break;
+        case 'a':
+            pe.setMode(0);
+            break;
+        case 's':
+            pe.setMode(1);
+            break;
+        case 'd':
+            pe.setMode(2);
+            break;
+        case 'f':
+            pe.setMode(3);
+            break;
+        case 'b':
+            pe.toggleNega();
+            break;
+        default:
+            break;
     }
 }
 
@@ -140,7 +172,7 @@ void ofApp::setupDeferred(){
     dlight.ambientColor = ofFloatColor(0.0);
     lightingPass->addLight(dlight);
     
-    deferred.createPass<HdrBloomPass>();
+    hdrBloomPass = deferred.createPass<HdrBloomPass>().get();
     dofPass = deferred.createPass<DofPass>().get();
     
     // gui
@@ -216,5 +248,11 @@ void ofApp::disableWireFrame(){
     isWire = false;
     for (int i = 0; i < objs.size(); i++) {
         objs[i]->disableWireFrame();
+    }
+}
+
+void ofApp::setSpeed(float s){
+    for (int i = 0; i < objs.size(); i++) {
+        
     }
 }

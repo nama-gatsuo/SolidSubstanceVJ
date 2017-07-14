@@ -43,15 +43,15 @@ public:
         shader.setUniform3f("rot2", rot2);
         shader.setUniform3f("scale2", scale2);
         shader.setUniform3f("trans2", trans2);
-        mesh.drawInstanced(OF_MESH_FILL, xSize * ySize);
+        mesh.drawInstanced(drawMode, xSize * ySize);
         shader.end();
     };
     void randomize(){
         float tfactor = 300;
         float sMin = 1.0;
-        float sMax = 2.5;
+        float sMax = 2.0;
         float rMin = TWO_PI*1.0;
-        float rMax = TWO_PI*2.0;
+        float rMax = TWO_PI*3.0;
         
         rot1.to(ofPoint(ofRandom(rMin, rMax), ofRandom(rMin, rMax), ofRandom(rMin, rMax)));
         scale1.to(ofPoint(ofRandom(sMin, sMax), ofRandom(sMin, sMax), ofRandom(sMin, sMax)));
@@ -73,7 +73,7 @@ private:
         float h = 10.0;
         float d = 10.0;
         
-        float t = 2.;
+        float t = 1.;
         w += t;
         h += t;
         d += t;
@@ -148,7 +148,7 @@ private:
 //        m.glRotate(45, 0,0,1);
 //        m.glScale(w * 0.9, h * 0.9, d * 0.9);
 //        createBox(m, c2);
-//        
+//
         
     };
     void createBox(const ofMatrix4x4& mat, const ofFloatColor& c){

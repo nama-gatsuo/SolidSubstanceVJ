@@ -5,7 +5,7 @@
 class CalatravaStruct : public ObjBase {
 public:
     void setup();
-    void update();
+    void update(float dt);
     void draw(ofCamera& cam, bool isShadow);
     void randomize();
     void setParam(int ch, float val);

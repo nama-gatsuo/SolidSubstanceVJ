@@ -25,13 +25,13 @@ void CalatravaStruct::setup(){
     toRotate.setSpeed(0.005);
     toScale.setSpeed(0.005);
 }
-void CalatravaStruct::update(){
-    fromTrans.update();
-    fromRotate.update();
-    fromScale.update();
-    toTrans.update();
-    toRotate.update();
-    toScale.update();
+void CalatravaStruct::update(float dt){
+    fromTrans.update(dt);
+    fromRotate.update(dt);
+    fromScale.update(dt);
+    toTrans.update(dt);
+    toRotate.update(dt);
+    toScale.update(dt);
 }
 
 void CalatravaStruct::draw(ofCamera& cam, bool isShadow){

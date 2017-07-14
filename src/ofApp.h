@@ -7,6 +7,8 @@
 #include "MatInst.hpp"
 #include "TriPat.hpp"
 #include "TriWall.hpp"
+#include "FractalInstancing.hpp"
+#include "RandomJoint.hpp" 
 
 #include "PostEffect.hpp"
 
@@ -84,4 +86,6 @@ private:
     ofParameter<float> dof_blur;
     ofParameter<float> dof_ape;
     ofParameter<float> dof_focal;
+    
+    ofParameter<float> dt;
 };

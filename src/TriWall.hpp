@@ -12,11 +12,11 @@ public:
         unsigned yn = 6;
         unsigned xn = 6;
         
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < N; i++) {
             mesh.clear();
             num = floor(ofRandom(2.0, 8.0));
             
-            c.set(0.5, 0.8, 0.8 + ofRandom(0.8));
+            c.set(0.5, 0.8, 1.0 + ofRandom(0.8));
             
             randomSeeds.clear();
             createRandomSeed();
@@ -51,9 +51,9 @@ public:
         }
         randomize();
     };
-    void update(){
-        for (int i = 0; i < 6; i++) {
-            zs[i].update();
+    void update(float dt){
+        for (int i = 0; i < N; i++) {
+            zs[i].update(dt);
         }
     };
     void draw(ofCamera& cam, bool isShadow){
@@ -65,7 +65,7 @@ public:
         shader.setUniform1f("farClip", cam.getFarClip());
         shader.setUniform1f("nearClip", cam.getNearClip());
         
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < N; i++) {
             ofPushMatrix();
             ofTranslate(ofVec3f(0, 0, zs[i].getValue()));
             meshes[i].draw(drawMode);
@@ -78,12 +78,12 @@ public:
         
         float coin = ofRandom(1.0);
         
-        if (coin > 0.5) {
-            for (int i = 0; i < 6; i++) {
-                zs[i].to(ofRandom(-1200, 1200));
+        if (coin <  0.8) {
+            for (int i = 0; i < N; i++) {
+                zs[i].to(ofRandom(-1600, 1600));
             }
         } else {
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < N; i++) {
                 zs[i].to(0.);
             }
         }
@@ -183,5 +183,6 @@ private:
     ofShader shader;
     
     unsigned num = 6;
+    unsigned N = 8;
     vector<vector<float>> randomSeeds;
 };

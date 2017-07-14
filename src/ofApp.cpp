@@ -8,6 +8,7 @@ void ofApp::setup(){
     setupDeferred();
 //    shadowLightPass->setEnabled(false);
 //    hdrBloomPass->setEnabled(false);
+    panel.add(dt.set("dt", 1.0, 0.001, 2.0));
     
     shared_ptr<ObjBase> o0(new CalatravaStruct());
     o0->setup();
@@ -21,10 +22,17 @@ void ofApp::setup(){
     o2->setup();
     objs.push_back(o2);
     
-    
     shared_ptr<ObjBase> o3(new TriPat());
     o3->setup();
     objs.push_back(o3);
+    
+    shared_ptr<ObjBase> o4(new FractInst());
+    o4->setup();
+    objs.push_back(o4);
+    
+    shared_ptr<ObjBase> o5(new RandomJoint());
+    o5->setup();
+    objs.push_back(o5);
     
     camPos.setSpeed(0.005);
     
@@ -35,14 +43,14 @@ void ofApp::setup(){
 void ofApp::update(){
     
     for (int i = 0; i < objs.size(); i++) {
-        if (objs[i]->isEnable()) objs[i]->update();
+        if (objs[i]->isEnable()) objs[i]->update(dt.get());
     }
-    lp1.update();
-    lp2.update();    
+    lp1.update(dt.get());
+    lp2.update(dt.get());
     lightingPass->getLightRef(0).position = lp1;
     lightingPass->getLightRef(1).position = lp2;
 
-    camPos.update();
+    camPos.update(dt.get());
     cam.setPosition(camPos);
     cam.lookAt(camLook);
     if (isShow) updateDeferredParam();
@@ -126,6 +134,14 @@ void ofApp::keyPressed(int key){
         case '3':
             if (objs[3]->isEnable()) objs[3]->disable();
             else objs[3]->enable();
+            break;
+        case '4':
+            if (objs[4]->isEnable()) objs[4]->disable();
+            else objs[4]->enable();
+            break;
+        case '5':
+            if (objs[5]->isEnable()) objs[5]->disable();
+            else objs[5]->enable();
             break;
         case 'a':
             pe.setMode(0);

@@ -46,8 +46,8 @@ public:
         
         seed.to(0.5);
     };
-    void update(){
-        seed.update();
+    void update(float dt){
+        seed.update(dt);
     };
     void draw(ofCamera& cam, bool isShadow){
         ofMatrix4x4 normalMatrix = ofMatrix4x4::getTransposedOf(cam.getModelViewMatrix().getInverse());

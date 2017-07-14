@@ -12,20 +12,20 @@ public:
         shader.setUniform2f("size", xSize, ySize);
         shader.end();
         
-        rot1.setSpeed(0.005);
-        scale1.setSpeed(0.005);
-        trans1.setSpeed(0.005);
-        rot2.setSpeed(0.005);
-        scale2.setSpeed(0.005);
+        rot1.setSpeed(0.004);
+        scale1.setSpeed(0.004);
+        trans1.setSpeed(0.004);
+        rot2.setSpeed(0.004);
+        scale2.setSpeed(0.004);
         trans2;
     };
-    void update(){
-        rot1.update();
-        scale1.update();
-        trans1.update();
-        rot2.update();
-        scale2.update();
-        trans2.update();
+    void update(float dt){
+        rot1.update(dt);
+        scale1.update(dt);
+        trans1.update(dt);
+        rot2.update(dt);
+        scale2.update(dt);
+        trans2.update(dt);
     };
     void draw(ofCamera &cam, bool isShadow){
         ofMatrix4x4 normalMatrix = ofMatrix4x4::getTransposedOf(cam.getModelViewMatrix().getInverse());

@@ -6,8 +6,9 @@ void ofApp::setup(){
     ofBackground(0);
     pe.setup();
     setupDeferred();
+    updateDeferredParam();
 //    shadowLightPass->setEnabled(false);
-//    hdrBloomPass->setEnabled(false);
+    
     panel.add(dt.set("dt", 1.0, 0.001, 2.0));
     
     shared_ptr<ObjBase> o0(new CalatravaStruct());
@@ -37,6 +38,8 @@ void ofApp::setup(){
     camPos.setSpeed(0.005);
     
     disableWireFrame();
+    
+    receiver.setup(7401);
 }
 
 //--------------------------------------------------------------
@@ -54,6 +57,83 @@ void ofApp::update(){
     cam.setPosition(camPos);
     cam.lookAt(camLook);
     if (isShow) updateDeferredParam();
+
+    while (receiver.hasWaitingMessages()){
+        ofxOscMessage m;
+        receiver.getNextMessage(m);
+        
+        string address = m.getAddress();
+        vector<string> dirs = ofSplitString(address, "/");
+        
+        if (dirs[1] == "p") {
+            int i = ofToInt(dirs[2]);
+            float val = m.getArgAsInt32(0) / 128.;
+            
+            if (i == 0) {
+                pl1_rad.set(10.+val*800.);
+                lightingPass->getLightRef(0).radius = pl1_rad.get();
+            } else if (i == 1) {
+                pl1_rad.set(10.+val*800.);
+                lightingPass->getLightRef(1).radius = pl2_rad.get();
+            } else if (i == 2) {
+            } else if (i == 3) {
+                dof_focal.set(0.6 * val);
+                dofPass->setFocus(dof_focal.get());
+            } else if (i == 4) {
+                dt.set(0.001 + 2.0 * val);
+            }
+            
+        } else if (dirs[1] == "bang") {
+            int i = ofToInt(dirs[2]);
+            
+            if (i == 0) {
+                // randomize scene
+                for (int i = 0; i < objs.size(); i++) {
+                    if (objs[i]->isEnable()) objs[i]->randomize();
+                }
+                lp1.to(ofPoint(ofRandom(-800, 800), ofRandom(30, 800), ofRandom(-800, 800)));
+                lp2.to(ofPoint(ofRandom(-800, 800), ofRandom(30, 800), ofRandom(-800, 800)));
+                
+                camPos.to(ofPoint(ofRandom(-1600, 1600), ofRandom(0, 1000), ofRandom(-1600, 1600)));
+                camLook.to(ofPoint(ofRandom(-400, 400), ofRandom(-400, 400), ofRandom(-400, 400)));
+                
+            } else if (i == 1) {
+                // randomize effects
+                float coin = ofRandom(1.);
+                
+                if (coin < 0.1) {
+                    enableWireFrame();
+                } else if (coin < 0.5) {
+                    disableWireFrame();
+                }
+                
+                coin = ofRandom(1.);
+                if (coin < 0.3) {
+                    int index = floor(ofRandom(1.) * objs.size());
+                    if (objs[index]->isEnable()) {
+                        disableObj(index);
+                    } else {
+                        if (activeNum < MAX_NUM) {
+                            enableObj(index);
+                        }
+                    }
+                }
+                
+                coin = ofRandom(1.);
+                if (coin < 0.15) pe.setMode(0);
+                else if (coin < 0.2) pe.setMode(1);
+                else if (coin < 0.3) pe.setMode(2);
+                else if (coin < 0.4) pe.setMode(3);
+                else if (coin < 0.5) pe.disableGrey();
+                else if (coin < 0.6) pe.enableGrey(false);
+                else if (coin < 0.65) pe.enableGrey(true);
+                else if (coin < 0.75) {
+                    if (hdrBloomPass->getEnabled()) hdrBloomPass->setEnabled(false);
+                    else hdrBloomPass->setEnabled(true);
+                }
+            }
+        }
+    }
 }
 
 //--------------------------------------------------------------
@@ -106,8 +186,8 @@ void ofApp::keyPressed(int key){
             for (int i = 0; i < objs.size(); i++) {
                 if (objs[i]->isEnable()) objs[i]->randomize();
             }
-            lp1.to(ofPoint(ofRandom(-800, 800), ofRandom(0, 800), ofRandom(-800, 800)));
-            lp2.to(ofPoint(ofRandom(-800, 800), ofRandom(0, 800), ofRandom(-800, 800)));
+            lp1.to(ofPoint(ofRandom(-800, 800), ofRandom(30, 800), ofRandom(-800, 800)));
+            lp2.to(ofPoint(ofRandom(-800, 800), ofRandom(30, 800), ofRandom(-800, 800)));
             
             camPos.to(ofPoint(ofRandom(-1600, 1600), ofRandom(0, 1000), ofRandom(-1600, 1600)));
             camLook.to(ofPoint(ofRandom(-400, 400), ofRandom(-400, 400), ofRandom(-400, 400)));
@@ -119,30 +199,12 @@ void ofApp::keyPressed(int key){
             if (isWire) disableWireFrame();
             else enableWireFrame();
             break;
-        case '0':
-            if (objs[0]->isEnable()) objs[0]->disable();
-            else objs[0]->enable();
-            break;
-        case '1':
-            if (objs[1]->isEnable()) objs[1]->disable();
-            else objs[1]->enable();
-            break;
-        case '2':
-            if (objs[2]->isEnable()) objs[2]->disable();
-            else objs[2]->enable();
-            break;
-        case '3':
-            if (objs[3]->isEnable()) objs[3]->disable();
-            else objs[3]->enable();
-            break;
-        case '4':
-            if (objs[4]->isEnable()) objs[4]->disable();
-            else objs[4]->enable();
-            break;
-        case '5':
-            if (objs[5]->isEnable()) objs[5]->disable();
-            else objs[5]->enable();
-            break;
+        case '0': toggleObj(0); break;
+        case '1': toggleObj(1); break;
+        case '2': toggleObj(2); break;
+        case '3': toggleObj(3); break;
+        case '4': toggleObj(4); break;
+        case '5': toggleObj(5); break;
         case 'a':
             pe.setMode(0);
             break;
@@ -156,7 +218,17 @@ void ofApp::keyPressed(int key){
             pe.setMode(3);
             break;
         case 'b':
-            pe.toggleNega();
+            pe.disableGrey();
+            break;
+        case 'n':
+            pe.enableGrey(false);
+            break;
+        case 'm':
+            pe.enableGrey(true);
+            break;
+        case 'l':
+            if (hdrBloomPass->getEnabled()) hdrBloomPass->setEnabled(false);
+            else hdrBloomPass->setEnabled(true);
             break;
         default:
             break;
@@ -178,7 +250,6 @@ void ofApp::setupDeferred(){
     shadowLightPass->setCam(60, 0.1, 4000);
     shadowLightPass->setPosition(0, 1500.0, 500);
     shadowLightPass->lookAt(ofVec3f(0.0));
-
     
     lightingPass = deferred.createPass<PointLightPass>().get();
     ofxDeferredShading::PointLight dlight;
@@ -239,13 +310,12 @@ void ofApp::updateDeferredParam(){
     lightingPass->getLightRef(1).radius = pl2_rad.get();
     
     ssaoPass->setOcculusionRadius(ao_rad.get());
-    ssaoPass->setDrakness(ao_dark.get());
+    ssaoPass->setDarkness(ao_dark.get());
     
     shadowLightPass->setAmbientColor(ofFloatColor(sha_amb.get()));
     shadowLightPass->setDiffuseColor(ofFloatColor(sha_dif.get()));
     shadowLightPass->setDarkness(sha_dark.get());
     shadowLightPass->setBlend(sha_blend.get());
-    
     
     dofPass->setFocus(dof_focal.get());
     dofPass->setMaxBlur(dof_blur.get());
@@ -267,8 +337,17 @@ void ofApp::disableWireFrame(){
     }
 }
 
-void ofApp::setSpeed(float s){
-    for (int i = 0; i < objs.size(); i++) {
-        
+void ofApp::enableObj(int index){
+    objs[index]->enable(); activeNum++;
+}
+void ofApp::disableObj(int index){
+    objs[index]->diswwwable(); activeNum--;
+}
+
+void ofApp::toggleObj(int index){
+    if (objs[index]->isEnable()) {
+        disableObj(index);
+    } else {
+        enableObj(index);
     }
 }

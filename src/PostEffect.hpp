@@ -11,9 +11,9 @@ public:
     void bang();
     void setMode(int mode);
     void setParam(int ch, float val);
-    void enableNega();
-    void disableNega();
-    void toggleNega();
+    
+    void enableGrey(bool isNega);
+    void disableGrey();
     
 private:
     ofFbo base;
@@ -24,8 +24,8 @@ private:
     ofShader complexConv;
     ofShader mirrorConv;
     
+    bool isGrey = false;
     bool isNega = false;
-    ofShader negaConv;
-    ofShader gammaConv;
+    ofShader greyConv;
     
 };

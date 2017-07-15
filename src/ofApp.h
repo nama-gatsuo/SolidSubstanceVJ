@@ -34,15 +34,19 @@ private:
     void enableWireFrame();
     void disableWireFrame();
     
-    void setSpeed(float s);
+    void enableObj(int index);
+    void disableObj(int index);
+    void toggleObj(int index);
     
+    int activeNum = 0;
+    const int MAX_NUM = 3;
     vector<shared_ptr<ObjBase>> objs;
     
     ofEasyCam cam;
     
     bool isWire = true;
-    bool isDebug;
-    float speed;
+    
+    ofxOscReceiver receiver;
     
     PostEffect pe;
     
@@ -58,7 +62,7 @@ private:
     SmoothPoint camPos;
     SmoothPoint camLook;
     // gui
-    bool isShow = true;
+    bool isShow = false;
     ofxPanel panel;
     ofParameterGroup pl1;
     ofParameter<ofFloatColor> pl1_diff;

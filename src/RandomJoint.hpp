@@ -38,7 +38,7 @@ private:
         const int jointNum = 40;
         const int partsNum = 6;
         
-        float radius = 700;
+        float radius = 900;
         float heightBallance = 0.8;
         
         float threshold = 200.0;
@@ -58,7 +58,6 @@ private:
             randomCoord.push_back(p);
             
         }
-        
         
         for (int i = 0; i < partsNum; i++) {
             ofMatrix4x4 mat;

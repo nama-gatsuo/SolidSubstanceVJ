@@ -1,7 +1,6 @@
 #include "ofMain.h"
 #include "CommonUtil.hpp"
 #include "ObjBase.hpp"
-
 class FractInst : public ObjBase {
 public:
     void setup();

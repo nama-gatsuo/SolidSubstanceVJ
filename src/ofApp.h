@@ -8,7 +8,8 @@
 #include "TriPat.hpp"
 #include "TriWall.hpp"
 #include "FractalInstancing.hpp"
-#include "RandomJoint.hpp" 
+#include "RandomJoint.hpp"
+#include "RotateArc.hpp"
 
 #include "PostEffect.hpp"
 
@@ -39,7 +40,7 @@ private:
     void toggleObj(int index);
     
     int activeNum = 0;
-    const int MAX_NUM = 3;
+    const int MAX_NUM = 2;
     vector<shared_ptr<ObjBase>> objs;
     
     ofEasyCam cam;

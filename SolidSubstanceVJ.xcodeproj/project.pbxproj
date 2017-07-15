@@ -95,6 +95,7 @@
 		4E95FB446A9C9C6F0DE12D75 /* OscPrintReceivedElements.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscPrintReceivedElements.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscPrintReceivedElements.h; sourceTree = SOURCE_ROOT; };
 		4F9BBBACB059E9611DE1F113 /* ShadowLightPass.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ShadowLightPass.hpp; path = ../../../addons/ofxDeferredShading/src/ShadowLightPass.hpp; sourceTree = SOURCE_ROOT; };
 		52AFA1F08C420992CAAAE648 /* ofxSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSlider.h; path = ../../../addons/ofxGui/src/ofxSlider.h; sourceTree = SOURCE_ROOT; };
+		5A5241BD1F1A3829008DC306 /* RotateArc.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RotateArc.hpp; sourceTree = "<group>"; };
 		5A7B54B01F190B7000D3A21D /* RandomJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RandomJoint.hpp; sourceTree = "<group>"; };
 		5A9816491F177A89001A3E5A /* TriWall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TriWall.hpp; sourceTree = "<group>"; };
 		5A98164C1F17BD76001A3E5A /* MatInst.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MatInst.hpp; sourceTree = "<group>"; };
@@ -216,6 +217,7 @@
 				5AA60FD11F18C97300C4E8D7 /* FractalInstancing.cpp */,
 				5AA60FD21F18C97300C4E8D7 /* FractalInstancing.hpp */,
 				5A7B54B01F190B7000D3A21D /* RandomJoint.hpp */,
+				5A5241BD1F1A3829008DC306 /* RotateArc.hpp */,
 			);
 			name = Objs;
 			sourceTree = "<group>";

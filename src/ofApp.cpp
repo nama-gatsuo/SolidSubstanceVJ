@@ -35,6 +35,10 @@ void ofApp::setup(){
     o5->setup();
     objs.push_back(o5);
     
+    shared_ptr<ObjBase> o6(new RotateArc());
+    o6->setup();
+    objs.push_back(o6);
+    
     camPos.setSpeed(0.005);
     
     disableWireFrame();
@@ -77,7 +81,7 @@ void ofApp::update(){
                 lightingPass->getLightRef(1).radius = pl2_rad.get();
             } else if (i == 2) {
             } else if (i == 3) {
-                dof_focal.set(0.6 * val);
+                dof_focal.set(0.5 * val);
                 dofPass->setFocus(dof_focal.get());
             } else if (i == 4) {
                 dt.set(0.001 + 2.0 * val);
@@ -101,7 +105,7 @@ void ofApp::update(){
                 // randomize effects
                 float coin = ofRandom(1.);
                 
-                if (coin < 0.1) {
+                if (coin < 0.05) {
                     enableWireFrame();
                 } else if (coin < 0.5) {
                     disableWireFrame();
@@ -120,14 +124,14 @@ void ofApp::update(){
                 }
                 
                 coin = ofRandom(1.);
-                if (coin < 0.15) pe.setMode(0);
+                if (coin < 0.16) pe.setMode(0);
                 else if (coin < 0.2) pe.setMode(1);
                 else if (coin < 0.3) pe.setMode(2);
                 else if (coin < 0.4) pe.setMode(3);
                 else if (coin < 0.5) pe.disableGrey();
                 else if (coin < 0.6) pe.enableGrey(false);
-                else if (coin < 0.65) pe.enableGrey(true);
-                else if (coin < 0.75) {
+                else if (coin < 0.63) pe.enableGrey(true);
+                else if (coin < 0.73) {
                     if (hdrBloomPass->getEnabled()) hdrBloomPass->setEnabled(false);
                     else hdrBloomPass->setEnabled(true);
                 }
@@ -205,6 +209,7 @@ void ofApp::keyPressed(int key){
         case '3': toggleObj(3); break;
         case '4': toggleObj(4); break;
         case '5': toggleObj(5); break;
+        case '6': toggleObj(6); break;
         case 'a':
             pe.setMode(0);
             break;
@@ -293,7 +298,7 @@ void ofApp::setupDeferred(){
     dof.setName("Defocus Blur");
     dof.add(dof_blur.set("Max Blur", 0.5, 0.0, 1.0));
     dof.add(dof_ape.set("Aperture", 0.1, 0.0, 1.0));
-    dof.add(dof_focal.set("Focus Distance", 0.2, 0.0, 1.0));
+    dof.add(dof_focal.set("Focus Distance", 0.1, 0.0, 1.0));
     panel.add(dof);
 }
 
@@ -341,7 +346,7 @@ void ofApp::enableObj(int index){
     objs[index]->enable(); activeNum++;
 }
 void ofApp::disableObj(int index){
-    objs[index]->diswwwable(); activeNum--;
+    objs[index]->disable(); activeNum--;
 }
 
 void ofApp::toggleObj(int index){

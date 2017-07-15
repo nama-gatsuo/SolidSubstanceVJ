@@ -78,7 +78,7 @@ void PostEffect::draw(){
     
     if (isGrey) {
         greyConv.begin();
-        greyConv.setUniform1i("isNega", isNega?0:1);
+        greyConv.setUniform1i("isNega", isNega?1:0);
     }
     
     composite.draw(0,0);

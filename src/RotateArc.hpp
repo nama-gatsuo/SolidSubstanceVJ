@@ -37,7 +37,7 @@ public:
             boxScale[i].update(dt);
             radius[i].update(dt);
         }
-        t += dt * 0.01;
+        t += dt * 0.005;
     };
     void draw(ofCamera& cam, bool isShadow){
         

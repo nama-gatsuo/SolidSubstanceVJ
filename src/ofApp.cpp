@@ -92,6 +92,19 @@ void ofApp::update(){
             
             if (i == 0) {
                 // randomize scene
+                
+                float coin = ofRandom(1.);
+                if (coin < 0.2) {
+                    int index = floor(ofRandom(1.) * objs.size());
+                    if (objs[index]->isEnable()) {
+                        disableObj(index);
+                    } else {
+                        if (activeNum < MAX_NUM) {
+                            enableObj(index);
+                        }
+                    }
+                }
+                
                 for (int i = 0; i < objs.size(); i++) {
                     if (objs[i]->isEnable()) objs[i]->randomize();
                 }
@@ -109,18 +122,6 @@ void ofApp::update(){
                     enableWireFrame();
                 } else if (coin < 0.5) {
                     disableWireFrame();
-                }
-                
-                coin = ofRandom(1.);
-                if (coin < 0.3) {
-                    int index = floor(ofRandom(1.) * objs.size());
-                    if (objs[index]->isEnable()) {
-                        disableObj(index);
-                    } else {
-                        if (activeNum < MAX_NUM) {
-                            enableObj(index);
-                        }
-                    }
                 }
                 
                 coin = ofRandom(1.);
@@ -234,6 +235,9 @@ void ofApp::keyPressed(int key){
         case 'l':
             if (hdrBloomPass->getEnabled()) hdrBloomPass->setEnabled(false);
             else hdrBloomPass->setEnabled(true);
+            break;
+        case 'p':
+            ofToggleFullscreen();
             break;
         default:
             break;

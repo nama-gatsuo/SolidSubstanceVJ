@@ -3,6 +3,7 @@ A VJ set using motifs like mass solid substances. It is made by Max and openFram
 
 ## oF CG outputs
 ![](./bin/image.gif)
+
 See also captured movies below.
 * https://twitter.com/ayumu_naga/status/886150613125349377
 * https://twitter.com/ayumu_naga/status/886243096240955392
@@ -25,7 +26,7 @@ I reused objects I've made recently in [Daily Sketch repository](https://github.
 ### Attack detection:
 this Max app can detect attacks of sounds in frequency which user specifies with band pass filter(s) from audio input. And then it sends OSC to another app with a specified port.
 ### Parameter sender:
-This sends values in OSC with simple address. A user can also use a hardware device.
+Sends values as OSC to simple address. A user can also use a MIDI controller device.
 
 # Author
 [Ayumu Nagamatsu](http://ayumu-nagamatsu.com)

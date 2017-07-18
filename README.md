@@ -3,6 +3,9 @@ A VJ set using motifs like mass solid substances. It is made by Max and openFram
 
 ## oF CG outputs
 ![](./bin/image.gif)
+See also captured movies below.
+* https://twitter.com/ayumu_naga/status/886150613125349377
+* https://twitter.com/ayumu_naga/status/886243096240955392
 ### CG objects:
 I reused objects I've made recently in [Daily Sketch repository](https://github.com/nama-gatsuo/DailySketch/) with minor modifications.
 * [Calatrava Struct](https://github.com/nama-gatsuo/DailySketch/tree/master/CalatravaStruct)

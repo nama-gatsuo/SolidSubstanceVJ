@@ -9,7 +9,7 @@ public:
     void randomize();
     void setParam(int ch, float val){};
 private:
-    const int depth = 6;
+    const int depth = 5;
     ofShader shader;
     ofVboMesh mesh;
     

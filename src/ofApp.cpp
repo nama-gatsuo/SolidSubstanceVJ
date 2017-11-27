@@ -3,6 +3,8 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
+    ofSetFrameRate(30);
+    
     ofBackground(0);
     pe.setup();
     setupDeferred();
@@ -39,7 +41,7 @@ void ofApp::setup(){
     o6->setup();
     objs.push_back(o6);
     
-    camPos.setSpeed(0.005);
+    camPos.setSpeed(0.01);
     
     disableWireFrame();
     
@@ -94,10 +96,16 @@ void ofApp::update(){
                 // randomize scene
                 
                 float coin = ofRandom(1.);
-                if (coin < 0.2) {
+                if (coin < 0.3) {
                     int index = floor(ofRandom(1.) * objs.size());
                     if (objs[index]->isEnable()) {
-                        disableObj(index);
+                        if (activeNum == 1) {
+                            disableObj(index);
+                            enableObj(floor(ofRandom(1.) * objs.size()));
+                        } else{
+                            disableObj(index);
+                        }
+                        
                     } else {
                         if (activeNum < MAX_NUM) {
                             enableObj(index);
@@ -108,17 +116,34 @@ void ofApp::update(){
                 for (int i = 0; i < objs.size(); i++) {
                     if (objs[i]->isEnable()) objs[i]->randomize();
                 }
+                
+                coin = ofRandom(1.);
+
+                
+                if (coin < 0.25) {
+                    float dist = 200.;
+                    float t = ofRandom(TWO_PI);
+                    ofPoint p = ofPoint(sin(t), ofRandom(4.), cos(t));
+                    camPos.to(p * dist);
+                    
+                } else if (coin < 0.7) {
+                    float dist = 1600.;
+                    float t = ofRandom(TWO_PI);
+                    ofPoint p = ofPoint(sin(t), ofRandom(0.8), cos(t));
+                    camPos.to(p * dist);
+                }
+                
+                camLook.to(ofPoint(ofRandom(-200, 200), ofRandom(-200, 200), ofRandom(-200, 200)));
+                
                 lp1.to(ofPoint(ofRandom(-800, 800), ofRandom(30, 800), ofRandom(-800, 800)));
                 lp2.to(ofPoint(ofRandom(-800, 800), ofRandom(30, 800), ofRandom(-800, 800)));
                 
-                camPos.to(ofPoint(ofRandom(-1600, 1600), ofRandom(0, 1000), ofRandom(-1600, 1600)));
-                camLook.to(ofPoint(ofRandom(-400, 400), ofRandom(-400, 400), ofRandom(-400, 400)));
                 
             } else if (i == 1) {
                 // randomize effects
                 float coin = ofRandom(1.);
                 
-                if (coin < 0.05) {
+                if (coin < 0.07) {
                     enableWireFrame();
                 } else if (coin < 0.5) {
                     disableWireFrame();
@@ -181,6 +206,7 @@ void ofApp::draw(){
     }
     
     if (isShow) panel.draw();
+    //ofDrawBitmapString(ofToString(ofGetFrameRate()), 10, 20);
 }
 
 //--------------------------------------------------------------
@@ -256,8 +282,8 @@ void ofApp::setupDeferred(){
     
     shadowLightPass = deferred.createPass<ShadowLightPass>().get();
     shadowLightPass->lookAt(ofVec3f(0.0));
-    shadowLightPass->setCam(60, 0.1, 4000);
-    shadowLightPass->setPosition(0, 1500.0, 500);
+    shadowLightPass->setCam(75, 0.1, 3000);
+    shadowLightPass->setPosition(0, 1200.0, 300);
     shadowLightPass->lookAt(ofVec3f(0.0));
     
     lightingPass = deferred.createPass<PointLightPass>().get();
@@ -288,7 +314,7 @@ void ofApp::setupDeferred(){
     panel.add(pl2);
     
     ao.setName("Ambient Occlusion");
-    ao.add(ao_rad.set("Occlusion Radius", 5.0, 0.1, 100.0));
+    ao.add(ao_rad.set("Occlusion Radius", 3., 0.1, 100.0));
     ao.add(ao_dark.set("Darkness", 0.8, 0.1, 5.0));
     panel.add(ao);
     
@@ -301,7 +327,7 @@ void ofApp::setupDeferred(){
     
     dof.setName("Defocus Blur");
     dof.add(dof_blur.set("Max Blur", 0.5, 0.0, 1.0));
-    dof.add(dof_ape.set("Aperture", 0.1, 0.0, 1.0));
+    dof.add(dof_ape.set("Aperture", 0.07, 0.0, 1.0));
     dof.add(dof_focal.set("Focus Distance", 0.1, 0.0, 1.0));
     panel.add(dof);
 }

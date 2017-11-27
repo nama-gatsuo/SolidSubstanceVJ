@@ -10,9 +10,9 @@ in vec2 texcoord; // oF Default
 uniform float farClip;
 uniform float nearClip;
 
-uniform float dscale[6];
+uniform float dscale[5];
 uniform int division;
-uniform float translate[6];
+uniform float translate[5];
 uniform vec3 boxSize;
 uniform int index;
 
@@ -55,8 +55,8 @@ void main(){
 
     scale(p, boxSize);
 
-    for (int i = 0; i < 6; i++) {
-        float ind = floor(float(gl_InstanceID) / pow(division, float(5-i)));
+    for (int i = 0; i < 5; i++) {
+        float ind = floor(float(gl_InstanceID) / pow(division, float(4-i)));
 
         rotate(p, vec3(0., 1., 0.), PI/division * 2. * ind);
         scale(p, vec3(dscale[i]));
@@ -70,8 +70,8 @@ void main(){
     vec4 viewPos = modelViewMatrix * vec4(p, 1.0);
     vDepth = - viewPos.z / (farClip - nearClip);
     vNormal = (normalMatrix * normal).xyz;
-    if (index == 4.) {
-        vColor = vec4(1.2, 0.7, 8.0, 1.0);
+    if (index == 3.) {
+        vColor = vec4(1.9, 0.7, 1.2, 1.0);
     } else {
         vColor = color;
     }

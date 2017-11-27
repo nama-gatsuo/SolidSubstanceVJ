@@ -19,7 +19,7 @@ void main(){
         outputColor0.a = 1.0;
     } else {
         outputColor0 = vColor;
-        if (isWire == 1) outputColor0.a = 0.05;
+        if (isWire == 1) outputColor0.a = 0.5;
         outputColor1 = vPosition;
         outputColor2 = vec4(normalize(vNormal), vDepth);
 

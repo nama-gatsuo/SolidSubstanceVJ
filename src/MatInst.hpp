@@ -12,11 +12,11 @@ public:
         shader.setUniform2f("size", xSize, ySize);
         shader.end();
         
-        rot1.setSpeed(0.004);
-        scale1.setSpeed(0.004);
-        trans1.setSpeed(0.004);
-        rot2.setSpeed(0.004);
-        scale2.setSpeed(0.004);
+        rot1.setSpeed(0.005);
+        scale1.setSpeed(0.005);
+        trans1.setSpeed(0.05);
+        rot2.setSpeed(0.005);
+        scale2.setSpeed(0.005);
         trans2;
     };
     void update(float dt){

@@ -31,14 +31,16 @@ public:
                 ofVec3f shift(dw * (j-xn*0.5), 0, dh * (i-yn*0.5));
                 if (i%2==0) shift.x -= dw * 0.5;
                 
-                v[0] = ofVec3f(0,0,r) + shift;
-                v[1] = ofVec3f(-r*sqrt(3.)*0.5,0,-r*0.5) + shift;
-                v[2] = ofVec3f(r*sqrt(3.)*0.5,0,-r*0.5) + shift;
+                float h = -1.;
+                
+                v[0] = ofVec3f(0,h,r) + shift;
+                v[1] = ofVec3f(-r*sqrt(3.)*0.5,h,-r*0.5) + shift;
+                v[2] = ofVec3f(r*sqrt(3.)*0.5,h,-r*0.5) + shift;
                 createTri(v[0], v[1], v[2]);
                 
-                v[0] = ofVec3f(r*sqrt(3.)*0.5,0,-r*0.5) + shift;
-                v[1] = ofVec3f(0,0,r) + shift;
-                v[2] = ofVec3f(r*sqrt(3.),0,r) + shift;
+                v[0] = ofVec3f(r*sqrt(3.)*0.5,h,-r*0.5) + shift;
+                v[1] = ofVec3f(0,h,r) + shift;
+                v[2] = ofVec3f(r*sqrt(3.),h,r) + shift;
                 createTri(v[0], v[1], v[2]);
             }
             

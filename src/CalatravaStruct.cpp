@@ -10,7 +10,7 @@ void CalatravaStruct::setup(){
     mesh = ofMesh::box(1.,1.,1., 1,1,1);
     
     ofFloatColor col;
-    col.set(1.0);
+    col.set(1);
     
     for (int i = 0; i < mesh.getNumIndices(); i++){
         mesh.addColor(col);
@@ -60,10 +60,10 @@ void CalatravaStruct::randomize(){
     
     fromTrans.to(ofPoint(ofRandom(1000),ofRandom(1000),ofRandom(1000)));
     fromRotate.to(ofPoint(ofRandom(TWO_PI*2.),ofRandom(TWO_PI*2.),ofRandom(TWO_PI*2.)));
-    fromScale.to(ofPoint(10.,10.,1000));
+    fromScale.to(ofPoint(5.,5.,800));
     toTrans.to(ofPoint(ofRandom(2000),ofRandom(2000),ofRandom(2000)));
     toRotate.to(ofPoint(ofRandom(TWO_PI*2.),ofRandom(TWO_PI*2.),ofRandom(TWO_PI*2.)));
-    toScale.to(ofPoint(10.,10.,1000));;
+    toScale.to(ofPoint(5.,5.,800));;
     
 }
 void CalatravaStruct::setParam(int ch, float val){

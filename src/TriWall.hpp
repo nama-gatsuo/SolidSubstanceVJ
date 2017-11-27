@@ -14,7 +14,7 @@ public:
         
         for (int i = 0; i < N; i++) {
             mesh.clear();
-            num = floor(ofRandom(2.0, 8.0));
+            num = floor(ofRandom(3.0, 7.0));
             
             c.set(0.5, 0.8, 1.0 + ofRandom(0.8));
             
@@ -159,8 +159,8 @@ private:
         m.rotateRad(lon, 0, 1, 0);
         
         float d = end.distance(start);
-        float h = 48. / num;
-        float w = 48. / num;
+        float h = 24. / num;
+        float w = 24. / num;
         
         ofMesh box = ofMesh::box(w,h,d, 1,1,1);
         for (int i = 0; i < box.getNumVertices(); i++) {
@@ -183,6 +183,6 @@ private:
     ofShader shader;
     
     unsigned num = 6;
-    unsigned N = 8;
+    unsigned N = 6;
     vector<vector<float>> randomSeeds;
 };

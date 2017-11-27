@@ -6,15 +6,17 @@ void FractInst::setup(){
     mesh = ofMesh::box(1.,1.,1., 1,1,1);
     
     ofFloatColor col;
-    col.set(1.0);
+    col.set(0.5);
     
     for (int i = 0; i < mesh.getNumIndices(); i++){
         mesh.addColor(col);
     }
     SmoothValue s;
-    s.setSpeed(0.005);
+    s.setSpeed(0.03);
     scale.assign(depth, s);
     translate.assign(depth, s);
+    
+    division = 6;
     
 }
 
@@ -74,16 +76,18 @@ void FractInst::randomize(){
     
     float coin = ofRandom(1.0);
     
-    if (coin < 0.33) boxSize.to(ofPoint(5.,5., 200.));
-    else if (coin < 0.66) boxSize.to(ofPoint(200., 5.,5.));
-    else boxSize.to(ofPoint(10., 200., 10.));
-    
-    division = floor(ofRandom(3.0, 7.));
+    if (coin < 0.33) boxSize.to(ofPoint(5.,200., 5.));
+    else if (coin < 0.66) boxSize.to(ofPoint(5., 150.,5.));
+    else boxSize.to(ofPoint(5., 100., 5.));
+//    else {
+//        coin = ofRandom(1.0);
+//        division = coin > 0.5 ? 4 : 6;
+//    }
     
     for (int i = 0; i < depth; i++) {
         
-        scale[i].to(ofRandom(0.5, 1.0));
-        translate[i].to(ofRandom(0, 150.));
+        scale[i].to(ofRandom(0.5, 1.));
+        translate[i].to(ofRandom(0, 200.));
         
     }
 }
